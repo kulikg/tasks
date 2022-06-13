@@ -92,13 +92,11 @@ public class TaskService {
     }
 
     @Transactional
-    public void markTaskDone(TaskEntity task) {
-        if (taskRepository.findById(task.getId()).isPresent()) {
-            val finishedTask = task.toBuilder()
-                    .status(DONE)
-                    .build();
-            taskRepository.save(finishedTask);
-        }
+    public void markTaskDone(Long taskId) {
+        taskRepository.findById(taskId)
+                .ifPresent(task -> taskRepository.save(task.toBuilder()
+                .status(DONE)
+                .build()));
     }
 
     @Transactional

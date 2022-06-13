@@ -52,7 +52,7 @@ public class TaskScheduler {
 
     private void scheduleTask(TaskEntity task) {
         try {
-            taskService.markTaskDone(task);
+            taskService.markTaskDone(task.getId());
             log.info("schedule task " + task.getName());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
