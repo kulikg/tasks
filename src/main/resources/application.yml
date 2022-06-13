@@ -1,0 +1,18 @@
+logging:
+  level:
+    root: INFO
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include=*:
+
+springdoc:
+  packagesToScan: com.blackswan.tasks
+  pathsToMatch: /api/user/**
