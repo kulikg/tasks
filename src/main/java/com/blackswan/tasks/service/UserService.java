@@ -9,14 +9,12 @@ import com.blackswan.tasks.api.UserResponse;
 import com.blackswan.tasks.domain.UserEntity;
 import com.blackswan.tasks.repository.UserRepository;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -30,22 +28,18 @@ public class UserService {
 
     @Transactional
     public Long createNewUser(UserRequest userRequest) {
-        try {
-            val userEntity = UserEntity.builder()
-                    .userName(userRequest.getUserName())
-                    .firstName(userRequest.getFirstName())
-                    .lastName(userRequest.getLastName())
-                    .build();
-            return userRepository.save(userEntity).getId();
-        } catch (DataIntegrityViolationException e) {
-            throw new ResponseStatusException(BAD_REQUEST, "user already exist");
-        }
+        val userEntity = UserEntity.builder()
+                .userName(userRequest.getUserName())
+                .firstName(userRequest.getFirstName())
+                .lastName(userRequest.getLastName())
+                .build();
+        return userRepository.save(userEntity).getId();
     }
 
     @Transactional
     public void updateUser(Long id, UserRequest userRequest) {
         val existingEntity = userRepository.findById(id)
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "no such user"));
         val ongoingUserUpdate = existingEntity.toBuilder();
         Optional.ofNullable(userRequest.getUserName()).ifPresent(ongoingUserUpdate::userName);
         Optional.ofNullable(userRequest.getFirstName()).ifPresent(ongoingUserUpdate::firstName);

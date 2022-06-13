@@ -11,7 +11,6 @@ import com.blackswan.tasks.AbstractTest;
 import com.blackswan.tasks.api.UserRequest;
 import com.blackswan.tasks.api.UserResponse;
 import java.util.List;
-import java.util.stream.Stream;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 
@@ -60,6 +59,15 @@ class UserControllerTest extends AbstractTest {
         post("api/user", aUserRequest);
         val actual = post("api/user", aUserRequest).getStatusCode();
         assertThat(actual).isEqualTo(BAD_REQUEST);
+    }
+
+    @Test
+    void updateUserSetUserNameToExistingOne() {
+        post("api/user", otherUserRequest);
+        val userId = post("api/user", aUserRequest).getBody().getId();
+        val updateUser = UserRequest.builder().userName(otherUserRequest.getUserName()).build();
+        val status = put("api/user/" + userId, updateUser).getStatusCode();
+        assertThat(status).isEqualTo(BAD_REQUEST);
     }
 
     @Test
