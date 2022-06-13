@@ -13,7 +13,7 @@ import java.util.Optional;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 
-class TaskRequestSchedulerTest extends AbstractTest {
+class TaskSchedulerTest extends AbstractTest {
 
     @Override
     protected Map<String, String> appEnv() {

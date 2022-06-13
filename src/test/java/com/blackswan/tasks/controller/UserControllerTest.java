@@ -1,4 +1,4 @@
-package com.blackswan.tasks;
+package com.blackswan.tasks.controller;
 
 import static com.blackswan.tasks.Fixtures.aUserRequest;
 import static com.blackswan.tasks.Fixtures.otherUserRequest;
@@ -7,6 +7,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
+import com.blackswan.tasks.AbstractTest;
 import com.blackswan.tasks.api.UserRequest;
 import com.blackswan.tasks.api.UserResponse;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.stream.Stream;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 
-class UserRequestControllerTest extends AbstractTest {
+class UserControllerTest extends AbstractTest {
 
     @Test
     void createUser() {

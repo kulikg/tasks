@@ -1,4 +1,4 @@
-package com.blackswan.tasks;
+package com.blackswan.tasks.controller;
 
 import static com.blackswan.tasks.Fixtures.aTaskRequest;
 import static com.blackswan.tasks.Fixtures.aUserRequest;
@@ -8,6 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 
+import com.blackswan.tasks.AbstractTest;
 import com.blackswan.tasks.api.TaskRequest;
 import com.blackswan.tasks.api.TaskResponse;
 import java.time.LocalDateTime;
@@ -15,7 +16,7 @@ import java.util.List;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 
-public class TaskRequestControllerTest extends AbstractTest {
+public class TaskControllerTest extends AbstractTest {
 
     @Test
     void createTask() {
