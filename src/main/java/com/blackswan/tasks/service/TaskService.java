@@ -81,22 +81,16 @@ public class TaskService {
     }
 
     @Transactional
-    public List<TaskEntity> taskToSchedule() {
+    public Optional<TaskEntity> taskToSchedule() {
         val builder = entityManager.getCriteriaBuilder();
         val query = builder.createQuery(TaskEntity.class);
         val root = query.from(TaskEntity.class);
         val statusCriteria = builder.equal(root.get("status"), PENDING);
         val timeCriteria = builder.greaterThan(root.get("dateTime"), builder.currentTime());
         query.select(root).where(builder.and(statusCriteria, timeCriteria));
-        return entityManager.createQuery(query).getResultList();
-    }
-
-    @Transactional
-    public void markTaskDone(Long taskId) {
-        taskRepository.findById(taskId)
-                .ifPresent(task -> taskRepository.save(task.toBuilder()
-                .status(DONE)
-                .build()));
+        val result = entityManager.createQuery(query).setMaxResults(1).getResultList().stream().findFirst();
+        result.ifPresent(task -> taskRepository.save(task.toBuilder().status(DONE).build()));
+        return result;
     }
 
     @Transactional

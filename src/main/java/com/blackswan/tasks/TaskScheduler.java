@@ -4,14 +4,12 @@ import static java.util.concurrent.Executors.newScheduledThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static lombok.AccessLevel.PRIVATE;
 
-import com.blackswan.tasks.domain.TaskEntity;
 import com.blackswan.tasks.service.TaskService;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -41,22 +39,8 @@ public class TaskScheduler {
     }
 
     private void trigger() {
-        val tasks = taskService.taskToSchedule();
-        if (tasks.isEmpty()) {
-            log.info("no tasks to schedule");
-        } else {
-            log.info("will schedule {} tasks", tasks.size());
-            tasks.forEach(this::scheduleTask);
-        }
-    }
-
-    private void scheduleTask(TaskEntity task) {
-        try {
-            taskService.markTaskDone(task.getId());
-            log.info("schedule task " + task.getName());
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
+        taskService.taskToSchedule()
+                .ifPresent(task -> log.info("will schedule task {}", task.getName()));
     }
 
 }
